@@ -59,8 +59,9 @@ export default {
 
       this.parentData = viewerData;
     }
+    // console.log('viewerData22', viewerData, parent);
 
-    if (this.fulled || !viewerData) {
+    if (!options.inline && (this.fulled || !viewerData)) {
       viewerData = this.containerData;
     }
 

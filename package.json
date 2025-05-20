@@ -1,11 +1,11 @@
 {
-  "name": "viewerjs",
+  "name": "viewerjs-vue",
   "description": "JavaScript image viewer.",
-  "version": "1.11.7",
-  "main": "dist/viewer.common.js",
-  "module": "dist/viewer.esm.js",
-  "browser": "dist/viewer.js",
-  "style": "dist/viewer.css",
+  "version": "1.1.1",
+  "main": "dist/viewer-vue.common.js",
+  "module": "dist/viewer-vue.esm.js",
+  "browser": "dist/viewer-vue.js",
+  "style": "dist/viewer-vue.css",
   "types": "types/index.d.ts",
   "files": [
     "src",
@@ -14,13 +14,13 @@
   ],
   "scripts": {
     "build": "npm run build:css && npm run build:js",
-    "build:css": "postcss src/index.css -o dist/viewer.css --no-map",
+    "build:css": "postcss src/index.css -o dist/viewer-vue.css --no-map",
     "build:js": "rollup -c",
     "clean": "del-cli dist",
     "compress": "npm run compress:css && npm run compress:js",
-    "compress:css": "postcss dist/viewer.css -u cssnano -o dist/viewer.min.css --no-map",
-    "compress:js": "uglifyjs dist/viewer.js -o dist/viewer.min.js -c -m --comments /^!/",
-    "copy": "cpy dist/viewer.css docs/css --flat",
+    "compress:css": "postcss dist/viewer-vue.css -u cssnano -o dist/viewer-vue.min.css --no-map",
+    "compress:js": "uglifyjs dist/viewer-vue.js -o dist/viewer-vue.min.js -c -m --comments /^!/",
+    "copy": "cpy dist/viewer-vue.css docs/css --flat",
     "lint": "npm run lint:js && npm run lint:css",
     "lint:css": "stylelint **/*.{css,scss} --fix",
     "lint:js": "eslint . --fix",
@@ -28,12 +28,13 @@
     "release": "npm run clean && npm run lint && npm run build && npm run compress && npm run copy && npm test",
     "start": "npm-run-all --parallel watch:*",
     "test": "karma start",
+    "publish": "npm run build && npm publish",
     "watch:css": "postcss src/index.css -o docs/css/viewer.css -m -w",
     "watch:js": "rollup -c -m -w"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fengyuanchen/viewerjs.git"
+    "url": "git+https://gitee.com/crazy_about_programming/viewerjs-vue3.git"
   },
   "keywords": [
     "image",
@@ -52,7 +53,7 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fengyuanchen/viewerjs/issues"
+    "url": "https://gitee.com/crazy_about_programming/viewerjs-vue3/issues"
   },
   "homepage": "https://fengyuanchen.github.io/viewerjs",
   "devDependencies": {

@@ -111,6 +111,7 @@ export default {
     }
 
     if (this.ready && this.isShown && !this.hiding) {
+      // console.log('shown');
       this.view(this.index);
     }
   },

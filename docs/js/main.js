@@ -1,13 +1,14 @@
 window.onload = function () {
   'use strict';
 
-  var Viewer = window.Viewer;
+  var Viewer = window.ViewerVue;
   var console = window.console || { log: function () {} };
   var pictures = document.querySelector('.docs-pictures');
   var toggles = document.querySelector('.docs-toggles');
   var buttons = document.querySelector('.docs-buttons');
   var options = {
     // inline: true,
+    fullscreen:false,
     url: 'data-original',
     ready: function (e) {
       console.log(e.type);
@@ -61,7 +62,7 @@ window.onload = function () {
       console.log(e.type);
     }
   };
-  var viewer = new Viewer(pictures, options);
+  var viewer = new ViewerVue(pictures, options);
 
   function toggleButtons(mode) {
     var targets;
@@ -102,7 +103,7 @@ window.onload = function () {
       name = input.getAttribute('name');
       options[name] = name === 'inline' ? JSON.parse(input.getAttribute('data-value')) : input.checked;
       viewer.destroy();
-      viewer = new Viewer(pictures, options);
+      viewer = new ViewerVue(pictures, options);
       toggleButtons(options.inline ? 'inline' : 'modal');
     }
   };

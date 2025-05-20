@@ -1,11 +1,11 @@
 /*!
- * Viewer.js v1.11.7
+ * ViewerVue.js v1.1.1
  * https://fengyuanchen.github.io/viewerjs
  *
  * Copyright 2015-present Chen Fengyuan
  * Released under the MIT license
  *
- * Date: 2024-11-24T04:32:19.116Z
+ * Date: 2025-05-20T09:21:35.662Z
  */
 
 function _classCallCheck(a, n) {
@@ -282,7 +282,7 @@ var DEFAULTS = {
   stop: null
 };
 
-var TEMPLATE = '<div class="viewer-container" tabindex="-1" touch-action="none">' + '<div class="viewer-canvas"></div>' + '<div class="viewer-footer">' + '<div class="viewer-title"></div>' + '<div class="viewer-toolbar"></div>' + '<div class="viewer-navbar">' + '<ul class="viewer-list" role="navigation"></ul>' + '</div>' + '</div>' + '<div class="viewer-tooltip" role="alert" aria-hidden="true"></div>' + '<div class="viewer-button" data-viewer-action="mix" role="button"></div>' + '<div class="viewer-player"></div>' + '</div>';
+var TEMPLATE = '<div class="viewer-container" tabindex="-1" touch-action="none">' + '<div class="viewer-canvas"></div>' + '<div class="viewer-footer">' + '<div class="viewer-title">' + '<span class="viewer-title-tooltip"></span>' + '</div>' + '<div class="viewer-toolbar"></div>' + '<div class="viewer-navbar">' + '<ul class="viewer-list" role="navigation"></ul>' + '</div>' + '</div>' + '<div class="viewer-tooltip" role="alert" aria-hidden="true"></div>' + '<div class="viewer-button" data-viewer-action="mix" role="button"></div>' + '<div class="viewer-player"></div>' + '</div>';
 
 var IS_BROWSER = typeof window !== 'undefined' && typeof window.document !== 'undefined';
 var WINDOW = IS_BROWSER ? window : {};
@@ -300,7 +300,6 @@ var CLASS_ACTIVE = "".concat(NAMESPACE, "-active");
 var CLASS_CLOSE = "".concat(NAMESPACE, "-close");
 var CLASS_FADE = "".concat(NAMESPACE, "-fade");
 var CLASS_FIXED = "".concat(NAMESPACE, "-fixed");
-var CLASS_FULLSCREEN = "".concat(NAMESPACE, "-fullscreen");
 var CLASS_FULLSCREEN_EXIT = "".concat(NAMESPACE, "-fullscreen-exit");
 var CLASS_HIDE = "".concat(NAMESPACE, "-hide");
 var CLASS_HIDE_MD_DOWN = "".concat(NAMESPACE, "-hide-md-down");
@@ -358,7 +357,7 @@ var DATA_ACTION = "".concat(NAMESPACE, "Action");
 var REGEXP_SPACES = /\s\s*/;
 
 // Misc
-var BUTTONS = ['zoom-in', 'zoom-out', 'one-to-one', 'reset', 'prev', 'play', 'next', 'rotate-left', 'rotate-right', 'flip-horizontal', 'flip-vertical'];
+var BUTTONS = ['zoom-in', 'zoom-out', 'one-to-one', 'reset', 'prev', 'play', 'next', 'rotate-left', 'rotate-right', 'flip-horizontal', 'flip-vertical', 'full-screen-modal', 'download'];
 
 /**
  * Check if the given value is a string.
@@ -967,7 +966,9 @@ var render = {
       };
       this.parentData = viewerData;
     }
-    if (this.fulled || !viewerData) {
+    // console.log('viewerData22', viewerData, parent);
+
+    if (!options.inline && (this.fulled || !viewerData)) {
       viewerData = this.containerData;
     }
     this.viewerData = assign({}, viewerData);
@@ -1072,9 +1073,11 @@ var render = {
     var list = this.list;
     list.innerHTML = '';
     removeClass(list, CLASS_TRANSITION);
-    setStyle(list, getTransforms({
+    setStyle(list, assign({
+      width: 0
+    }, getTransforms({
       translateX: 0
-    }));
+    })));
   },
   initImage: function initImage(done) {
     var _this2 = this;
@@ -1243,16 +1246,19 @@ var handlers = {
     if (IS_TOUCH_DEVICE && event.isTrusted && target === this.canvas) {
       clearTimeout(this.clickCanvasTimeout);
     }
+    // console.log('action', action);
+
     switch (action) {
       case 'mix':
         if (this.played) {
           this.stop();
         } else if (options.inline) {
-          if (this.fulled) {
-            this.exit();
-          } else {
-            this.full();
-          }
+          this.hide(true);
+          // if (this.fulled) {
+          //   this.exit();
+          // } else {
+          //   this.full();
+          // }
         } else {
           this.hide();
         }
@@ -1297,6 +1303,12 @@ var handlers = {
         break;
       case 'flip-vertical':
         this.scaleY(-imageData.scaleY || -1);
+        break;
+      case 'fullscreen-modal':
+        this.play(options.toolbar.fullscreenModal);
+        break;
+      case 'download':
+        this.download();
         break;
       default:
         if (this.played) {
@@ -1658,7 +1670,8 @@ var methods = {
     var immediate = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
     var element = this.element,
       options = this.options;
-    if (options.inline || this.showing || this.isShown || this.showing) {
+    // options.inline ||
+    if (this.showing || this.isShown || this.showing) {
       return this;
     }
     if (!this.ready) {
@@ -1719,7 +1732,8 @@ var methods = {
     var immediate = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
     var element = this.element,
       options = this.options;
-    if (options.inline || this.hiding || !(this.isShown || this.showing)) {
+    // options.inline ||
+    if (this.hiding || !(this.isShown || this.showing)) {
       return this;
     }
     if (isFunction(options.hide)) {
@@ -1801,7 +1815,8 @@ var methods = {
     }
     if (!this.isShown) {
       this.index = index;
-      return this.show();
+      var immediate = this.options.inline;
+      return this.show(immediate);
     }
     if (this.viewing) {
       this.viewing.abort();
@@ -1866,7 +1881,9 @@ var methods = {
     var onViewed = function onViewed() {
       var imageData = _this2.imageData;
       var render = Array.isArray(options.title) ? options.title[1] : options.title;
-      title.innerHTML = escapeHTMLEntities(isFunction(render) ? render.call(_this2, image, imageData) : "".concat(alt, " (").concat(imageData.naturalWidth, " \xD7 ").concat(imageData.naturalHeight, ")"));
+      title.setAttribute('title', escapeHTMLEntities(isFunction(render) ? render.call(_this2, image, imageData) : "".concat(alt)));
+      title.innerHTML = escapeHTMLEntities(isFunction(render) ? render.call(_this2, image, imageData) : "".concat(alt));
+      // (${imageData.naturalWidth} × ${imageData.naturalHeight})
     };
     var onLoad;
     var onError;
@@ -2655,6 +2672,19 @@ var methods = {
     }
     return this;
   },
+  download: function download() {
+    var options = this.options,
+      images = this.images,
+      index = this.index;
+    var imageUrl = images[index].getAttribute(options.url);
+    var imageAlt = images[index].getAttribute('alt');
+    var a = document.createElement('a');
+    a.href = imageUrl;
+    a.download = imageAlt;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  },
   // Destroy the viewer
   destroy: function destroy() {
     var element = this.element,
@@ -2778,6 +2808,7 @@ var others = {
       return;
     }
     if (this.ready && this.isShown && !this.hiding) {
+      // console.log('shown');
       this.view(this.index);
     }
   },
@@ -3037,9 +3068,18 @@ var Viewer = /*#__PURE__*/function () {
             });
           }
         });
-      } else {
+        // inline 模式下也可以点击图片预览----点击图片预览
         addListener(element, EVENT_CLICK, this.onStart = function (_ref) {
           var target = _ref.target;
+          removeClass(_this.viewer, CLASS_HIDE);
+          addClass(_this.viewer, CLASS_SHOW);
+          if (target.localName === 'img' && (!isFunction(options.filter) || options.filter.call(_this, target))) {
+            _this.view(_this.images.indexOf(target));
+          }
+        });
+      } else {
+        addListener(element, EVENT_CLICK, this.onStart = function (_ref2) {
+          var target = _ref2.target;
           if (target.localName === 'img' && (!isFunction(options.filter) || options.filter.call(_this, target))) {
             _this.view(_this.images.indexOf(target));
           }
@@ -3058,7 +3098,7 @@ var Viewer = /*#__PURE__*/function () {
       var template = document.createElement('div');
       template.innerHTML = TEMPLATE;
       var viewer = template.querySelector(".".concat(NAMESPACE, "-container"));
-      var title = viewer.querySelector(".".concat(NAMESPACE, "-title"));
+      var title = viewer.querySelector(".".concat(NAMESPACE, "-title >.").concat(NAMESPACE, "-title-tooltip"));
       var toolbar = viewer.querySelector(".".concat(NAMESPACE, "-toolbar"));
       var navbar = viewer.querySelector(".".concat(NAMESPACE, "-navbar"));
       var button = viewer.querySelector(".".concat(NAMESPACE, "-button"));
@@ -3099,7 +3139,8 @@ var Viewer = /*#__PURE__*/function () {
         var custom = isPlainObject(options.toolbar);
         var zoomButtons = BUTTONS.slice(0, 3);
         var rotateButtons = BUTTONS.slice(7, 9);
-        var scaleButtons = BUTTONS.slice(9);
+        var scaleButtons = BUTTONS.slice(9, 11);
+        var fullScreenButton = BUTTONS.slice(11, 12);
         if (!custom) {
           addClass(toolbar, getResponsiveClass(options.toolbar));
         }
@@ -3107,7 +3148,7 @@ var Viewer = /*#__PURE__*/function () {
           var deep = custom && isPlainObject(value);
           var name = custom ? hyphenate(index) : value;
           var show = deep && !isUndefined(value.show) ? value.show : value;
-          if (!show || !options.zoomable && zoomButtons.indexOf(name) !== -1 || !options.rotatable && rotateButtons.indexOf(name) !== -1 || !options.scalable && scaleButtons.indexOf(name) !== -1) {
+          if (!show || !options.zoomable && zoomButtons.indexOf(name) !== -1 || !options.rotatable && rotateButtons.indexOf(name) !== -1 || !options.scalable && scaleButtons.indexOf(name) !== -1 || !options.fullscreen && fullScreenButton.indexOf(name) !== -1) {
             return;
           }
           var size = deep && !isUndefined(value.size) ? value.size : value;
@@ -3146,7 +3187,9 @@ var Viewer = /*#__PURE__*/function () {
         });
       }
       if (options.inline) {
-        addClass(button, CLASS_FULLSCREEN);
+        // addClass(button, CLASS_FULLSCREEN);
+        addClass(button, CLASS_CLOSE);
+        addClass(viewer, CLASS_HIDE);
         setStyle(viewer, {
           zIndex: options.zIndexInline
         });
@@ -3173,11 +3216,7 @@ var Viewer = /*#__PURE__*/function () {
         }
         container.appendChild(viewer);
       }
-      if (options.inline) {
-        this.render();
-        this.bind();
-        this.isShown = true;
-      }
+      if (options.inline) ;
       this.ready = true;
       if (isFunction(options.ready)) {
         addListener(element, EVENT_READY, options.ready, {
@@ -3186,11 +3225,11 @@ var Viewer = /*#__PURE__*/function () {
       }
       if (dispatchEvent(element, EVENT_READY) === false) {
         this.ready = false;
-        return;
       }
-      if (this.ready && options.inline) {
-        this.view(this.index);
-      }
+      // 这里禁用初次渲染，因为初次渲染后的键盘事件没法绑定
+      // if (this.ready && options.inline) {
+      //   this.view(this.index);
+      // }
     }
 
     /**

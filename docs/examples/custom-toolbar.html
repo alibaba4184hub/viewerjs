@@ -7,7 +7,7 @@
   <title>Viewer.js</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
   <link rel="stylesheet" href="https://unpkg.com/bootstrap@4/dist/css/bootstrap.min.css" crossorigin="anonymous">
-  <link rel="stylesheet" href="../css/viewer.css">
+  <link rel="stylesheet" href="../css/viewer-vue.css">
   <style>
     .pictures {
       list-style: none;
@@ -63,34 +63,43 @@
 
   <script src="https://unpkg.com/jquery@3/dist/jquery.slim.min.js" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/bootstrap@4/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-  <script src="../js/viewer.js"></script>
+  <script src="../js/viewer-vue.js"></script>
   <script>
     window.addEventListener('DOMContentLoaded', function () {
       var galley = document.getElementById('galley');
-      var viewer = new Viewer(galley, {
+      var viewer = new ViewerVue(galley, {
         url: 'data-original',
         toolbar: {
           oneToOne: true,
+          'reset':true,
+          'prev':true,
+           play: true,
+          'next':true,
+          'rotateLeft':true,
+          'rotateRight':true,
+          'flipHorizontal':true,
+          'flipVertical':true,
+          //  download:false,
 
           prev: function() {
             viewer.prev(true);
           },
 
-          play: true,
+
 
           next: function() {
             viewer.next(true);
           },
 
-          download: function() {
-            const a = document.createElement('a');
+          // download: function() {
+          //   const a = document.createElement('a');
 
-            a.href = viewer.image.src;
-            a.download = viewer.image.alt;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-          },
+          //   a.href = viewer.image.src;
+          //   a.download = viewer.image.alt;
+          //   document.body.appendChild(a);
+          //   a.click();
+          //   document.body.removeChild(a);
+          // },
         },
       });
     });

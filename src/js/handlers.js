@@ -45,17 +45,19 @@ export default {
     if (IS_TOUCH_DEVICE && event.isTrusted && target === this.canvas) {
       clearTimeout(this.clickCanvasTimeout);
     }
+    // console.log('action', action);
 
     switch (action) {
       case 'mix':
         if (this.played) {
           this.stop();
         } else if (options.inline) {
-          if (this.fulled) {
-            this.exit();
-          } else {
-            this.full();
-          }
+          this.hide(true);
+          // if (this.fulled) {
+          //   this.exit();
+          // } else {
+          //   this.full();
+          // }
         } else {
           this.hide();
         }
@@ -115,7 +117,12 @@ export default {
       case 'flip-vertical':
         this.scaleY(-imageData.scaleY || -1);
         break;
-
+      case 'fullscreen-modal':
+        this.play(options.toolbar.fullscreenModal);
+        break;
+      case 'download':
+        this.download();
+        break;
       default:
         if (this.played) {
           this.stop();

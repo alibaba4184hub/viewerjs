@@ -11,88 +11,100 @@
 .viewer-flip-vertical,
 .viewer-fullscreen,
 .viewer-fullscreen-exit,
-.viewer-close {
+.viewer-close,
+.viewer-fullscreen-modal,
+.viewer-download {
   &::before {
-    background-image: url('../images/icons.svg');
+    background-image: url('../images/icons.png');
     background-repeat: no-repeat;
-    background-size: 280px;
+    background-size: 890px;
     color: transparent;
     display: block;
     font-size: 0;
-    height: 20px;
+    height: 40px;
     line-height: 0;
-    width: 20px;
+    width: 40px;
   }
 }
 
 .viewer-zoom-in::before {
-  background-position: 0 0;
+  background-position: -2px -2px;
   content: 'Zoom In';
 }
 
 .viewer-zoom-out::before {
-  background-position: -20px 0;
+  background-position: -62px -2px;
   content: 'Zoom Out';
 }
 
 .viewer-one-to-one::before {
-  background-position: -40px 0;
+  background-position: -124px -2px;
   content: 'One to One';
 }
 
 .viewer-reset::before {
-  background-position: -60px 0;
+  background-position: -182px -2px;
   content: 'Reset';
 }
 
 .viewer-prev::before {
-  background-position: -80px 0;
+  background-position: -242px -2px;
   content: 'Previous';
 }
 
 .viewer-play::before {
-  background-position: -100px 0;
+  background-position: -298px 0;
   content: 'Play';
 }
 
 .viewer-next::before {
-  background-position: -120px 0;
+  background-position: -360px -2px;
   content: 'Next';
 }
 
 .viewer-rotate-left::before {
-  background-position: -140px 0;
+  background-position: -423px -2px;
   content: 'Rotate Left';
 }
 
 .viewer-rotate-right::before {
-  background-position: -160px 0;
+  background-position: -482px -2px;
   content: 'Rotate Right';
 }
 
 .viewer-flip-horizontal::before {
-  background-position: -180px 0;
+  background-position: -542px -2px;
   content: 'Flip Horizontal';
 }
 
 .viewer-flip-vertical::before {
-  background-position: -200px 0;
+  background-position: -600px -2px;
   content: 'Flip Vertical';
 }
 
 .viewer-fullscreen::before {
-  background-position: -220px 0;
+  background-position: -672px 4px;
   content: 'Enter Full Screen';
 }
 
 .viewer-fullscreen-exit::before {
-  background-position: -240px 0;
+  background-position: -733px 4px;
   content: 'Exit Full Screen';
 }
 
 .viewer-close::before {
-  background-position: -260px 0;
+  background-position: -794px 4px;
   content: 'Close';
+}
+
+.viewer-fullscreen-modal::before {
+  background-position: -662px -2px;
+  content: "Full Screen Modal";
+}
+
+.viewer-download::before {
+  background-position: -842px -2px;
+  content: "Download";
 }
 
 .viewer-container {
@@ -156,7 +168,7 @@
 }
 
 .viewer-navbar {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 50%);
   overflow: hidden;
 }
 
@@ -238,18 +250,19 @@
     padding: 6px 3px;
 
     & > li {
-      background-color: rgba(0, 0, 0, 0.5);
+      background-color: rgba(254, 254, 254, 20%);
       border-radius: 50%;
       cursor: pointer;
       float: left;
-      height: 24px;
+      height: 50px;
+      margin: 0 5px;
       overflow: hidden;
       transition: background-color 0.15s;
-      width: 24px;
+      width: 50px;
 
       &:focus,
       &:hover {
-        background-color: rgba(0, 0, 0, 0.8);
+        background-color: #0f62c3;
       }
 
       &:focus {
@@ -280,10 +293,10 @@
     }
 
     & > .viewer-large {
-      height: 30px;
+      height: 60px;
       margin-bottom: -3px;
       margin-top: -3px;
-      width: 30px;
+      width: 60px;
 
       &::before {
         margin: 5px;
@@ -293,7 +306,7 @@
 }
 
 .viewer-tooltip {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 80%);
   border-radius: 10px;
   color: #fff;
   display: none;
@@ -309,26 +322,27 @@
   width: 50px;
 }
 
-.viewer-title {
-  color: #ccc;
+.viewer-title-tooltip {
+  color: #fff;
   display: inline-block;
-  font-size: 12px;
+  font-size: 28px;
   line-height: 1.2;
   margin: 5px 5%;
   max-width: 90%;
   min-height: 14px;
-  opacity: 0.8;
+  opacity: 0.9;
   overflow: hidden;
   text-overflow: ellipsis;
   transition: opacity 0.15s;
   white-space: nowrap;
+}
 
-  &:hover {
-    opacity: 1;
-  }
+.viewer-title-tooltip:hover {
+  opacity: 1;
 }
 
 .viewer-button {
+  -webkit-app-region: no-drag;
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 50%;
   cursor: pointer;
@@ -339,7 +353,6 @@
   top: -40px;
   transition: background-color 0.15s;
   width: 80px;
-  -webkit-app-region: no-drag;
 
   &:focus,
   &:hover {

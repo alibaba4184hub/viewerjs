@@ -10,7 +10,7 @@ import {
   CLASS_CLOSE,
   CLASS_FADE,
   CLASS_FIXED,
-  CLASS_FULLSCREEN,
+  // CLASS_FULLSCREEN,
   CLASS_HIDE,
   CLASS_INVISIBLE,
   DATA_ACTION,
@@ -21,6 +21,7 @@ import {
   NAMESPACE,
   REGEXP_SPACES,
   WINDOW,
+  CLASS_SHOW,
 } from './constants';
 import {
   addClass,
@@ -35,6 +36,7 @@ import {
   isPlainObject,
   isString,
   isUndefined,
+  removeClass,
   removeListener,
   setData,
   setStyle,
@@ -181,6 +183,14 @@ class Viewer {
           });
         }
       });
+      // inline 模式下也可以点击图片预览----点击图片预览
+      addListener(element, EVENT_CLICK, (this.onStart = ({ target }) => {
+        removeClass(this.viewer, CLASS_HIDE);
+        addClass(this.viewer, CLASS_SHOW);
+        if (target.localName === 'img' && (!isFunction(options.filter) || options.filter.call(this, target))) {
+          this.view(this.images.indexOf(target));
+        }
+      }));
     } else {
       addListener(element, EVENT_CLICK, (this.onStart = ({ target }) => {
         if (target.localName === 'img' && (!isFunction(options.filter) || options.filter.call(this, target))) {
@@ -202,7 +212,7 @@ class Viewer {
     template.innerHTML = TEMPLATE;
 
     const viewer = template.querySelector(`.${NAMESPACE}-container`);
-    const title = viewer.querySelector(`.${NAMESPACE}-title`);
+    const title = viewer.querySelector(`.${NAMESPACE}-title >.${NAMESPACE}-title-tooltip`);
     const toolbar = viewer.querySelector(`.${NAMESPACE}-toolbar`);
     const navbar = viewer.querySelector(`.${NAMESPACE}-navbar`);
     const button = viewer.querySelector(`.${NAMESPACE}-button`);
@@ -252,7 +262,8 @@ class Viewer {
       const custom = isPlainObject(options.toolbar);
       const zoomButtons = BUTTONS.slice(0, 3);
       const rotateButtons = BUTTONS.slice(7, 9);
-      const scaleButtons = BUTTONS.slice(9);
+      const scaleButtons = BUTTONS.slice(9, 11);
+      const fullScreenButton = BUTTONS.slice(11, 12);
 
       if (!custom) {
         addClass(toolbar, getResponsiveClass(options.toolbar));
@@ -262,13 +273,12 @@ class Viewer {
         const deep = custom && isPlainObject(value);
         const name = custom ? hyphenate(index) : value;
         const show = deep && !isUndefined(value.show) ? value.show : value;
-
         if (
           !show
           || (!options.zoomable && zoomButtons.indexOf(name) !== -1)
           || (!options.rotatable && rotateButtons.indexOf(name) !== -1)
           || (!options.scalable && scaleButtons.indexOf(name) !== -1)
-        ) {
+          || (!options.fullscreen && fullScreenButton.indexOf(name) !== -1)) {
           return;
         }
 
@@ -319,7 +329,9 @@ class Viewer {
     }
 
     if (options.inline) {
-      addClass(button, CLASS_FULLSCREEN);
+      // addClass(button, CLASS_FULLSCREEN);
+      addClass(button, CLASS_CLOSE);
+      addClass(viewer, CLASS_HIDE);
       setStyle(viewer, {
         zIndex: options.zIndexInline,
       });
@@ -355,9 +367,9 @@ class Viewer {
     }
 
     if (options.inline) {
-      this.render();
-      this.bind();
-      this.isShown = true;
+      // this.render();
+      // this.bind();
+      // this.isShown = true;
     }
 
     this.ready = true;
@@ -370,12 +382,11 @@ class Viewer {
 
     if (dispatchEvent(element, EVENT_READY) === false) {
       this.ready = false;
-      return;
     }
-
-    if (this.ready && options.inline) {
-      this.view(this.index);
-    }
+    // 这里禁用初次渲染，因为初次渲染后的键盘事件没法绑定
+    // if (this.ready && options.inline) {
+    //   this.view(this.index);
+    // }
   }
 
   /**

@@ -57,8 +57,8 @@ export default {
    */
   show(immediate = false) {
     const { element, options } = this;
-
-    if (options.inline || this.showing || this.isShown || this.showing) {
+    // options.inline ||
+    if (this.showing || this.isShown || this.showing) {
       return this;
     }
 
@@ -92,6 +92,7 @@ export default {
     const { viewer } = this;
 
     removeClass(viewer, CLASS_HIDE);
+
     viewer.setAttribute('role', 'dialog');
     viewer.setAttribute('aria-labelledby', this.title.id);
     viewer.setAttribute('aria-modal', true);
@@ -130,8 +131,8 @@ export default {
    */
   hide(immediate = false) {
     const { element, options } = this;
-
-    if (options.inline || this.hiding || !(this.isShown || this.showing)) {
+    // options.inline ||
+    if (this.hiding || !(this.isShown || this.showing)) {
       return this;
     }
 
@@ -223,13 +224,13 @@ export default {
 
     if (!this.isShown) {
       this.index = index;
-      return this.show();
+      const immediate = this.options.inline;
+      return this.show(immediate);
     }
 
     if (this.viewing) {
       this.viewing.abort();
     }
-
     const {
       element,
       options,
@@ -276,7 +277,6 @@ export default {
 
     addClass(item, CLASS_ACTIVE);
     item.setAttribute('aria-selected', true);
-
     if (options.focus) {
       item.focus();
     }
@@ -304,10 +304,15 @@ export default {
     const onViewed = () => {
       const { imageData } = this;
       const render = Array.isArray(options.title) ? options.title[1] : options.title;
-
+      title.setAttribute('title', escapeHTMLEntities(
+        isFunction(render)
+          ? render.call(this, image, imageData)
+          : `${alt}`,
+      ));
       title.innerHTML = escapeHTMLEntities(isFunction(render)
         ? render.call(this, image, imageData)
-        : `${alt} (${imageData.naturalWidth} × ${imageData.naturalHeight})`);
+        : `${alt}`);
+      // (${imageData.naturalWidth} × ${imageData.naturalHeight})
     };
     let onLoad;
     let onError;
@@ -1224,6 +1229,18 @@ export default {
     }
 
     return this;
+  },
+  download() {
+    const { options, images, index } = this;
+    const imageUrl = images[index].getAttribute(options.url);
+    const imageAlt = images[index].getAttribute('alt');
+
+    const a = document.createElement('a');
+    a.href = imageUrl;
+    a.download = imageAlt;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   },
 
   // Destroy the viewer
