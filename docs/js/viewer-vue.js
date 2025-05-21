@@ -1,11 +1,11 @@
 /*!
- * ViewerVue.js v1.1.3
+ * ViewerVue.js v1.1.5
  * https://fengyuanchen.github.io/viewerjs
  *
  * Copyright 2015-present Chen Fengyuan
  * Released under the MIT license
  *
- * Date: 2025-05-21T06:23:58.630Z
+ * Date: 2025-05-21T08:53:03.721Z
  */
 
 (function (global, factory) {
@@ -363,7 +363,7 @@
   var REGEXP_SPACES = /\s\s*/;
 
   // Misc
-  var BUTTONS = ['zoom-in', 'zoom-out', 'one-to-one', 'reset', 'prev', 'play', 'next', 'rotate-left', 'rotate-right', 'flip-horizontal', 'flip-vertical', 'fullscreen-modal', 'download'];
+  var BUTTONS = ['zoom-in', 'zoom-out', 'one-to-one', 'reset', 'prev', 'play', 'next', 'rotate-left', 'rotate-right', 'flip-horizontal', 'flip-vertical', 'full-screen-modal', 'download'];
 
   /**
    * Check if the given value is a string.

@@ -12,7 +12,7 @@
 .viewer-fullscreen,
 .viewer-fullscreen-exit,
 .viewer-close,
-.viewer-fullscreen-modal,
+.viewer-full-screen-modal,
 .viewer-download {
   &::before {
     background-image: url('../images/icons.png');
@@ -97,7 +97,7 @@
   content: 'Close';
 }
 
-.viewer-fullscreen-modal::before {
+.viewer-full-screen-modal::before {
   background-position: -662px -2px;
   content: "Full Screen Modal";
 }
