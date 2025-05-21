@@ -185,9 +185,9 @@ class Viewer {
       });
       // inline 模式下也可以点击图片预览----点击图片预览
       addListener(element, EVENT_CLICK, (this.onStart = ({ target }) => {
-        removeClass(this.viewer, CLASS_HIDE);
-        addClass(this.viewer, CLASS_SHOW);
         if (target.localName === 'img' && (!isFunction(options.filter) || options.filter.call(this, target))) {
+          removeClass(this.viewer, CLASS_HIDE);
+          addClass(this.viewer, CLASS_SHOW);
           this.view(this.images.indexOf(target));
         }
       }));

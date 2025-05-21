@@ -1,11 +1,11 @@
 /*!
- * ViewerVue.js v1.1.1
+ * ViewerVue.js v1.1.3
  * https://fengyuanchen.github.io/viewerjs
  *
  * Copyright 2015-present Chen Fengyuan
  * Released under the MIT license
  *
- * Date: 2025-05-20T09:21:35.662Z
+ * Date: 2025-05-21T06:23:58.630Z
  */
 
 'use strict';
@@ -359,7 +359,7 @@ var DATA_ACTION = "".concat(NAMESPACE, "Action");
 var REGEXP_SPACES = /\s\s*/;
 
 // Misc
-var BUTTONS = ['zoom-in', 'zoom-out', 'one-to-one', 'reset', 'prev', 'play', 'next', 'rotate-left', 'rotate-right', 'flip-horizontal', 'flip-vertical', 'full-screen-modal', 'download'];
+var BUTTONS = ['zoom-in', 'zoom-out', 'one-to-one', 'reset', 'prev', 'play', 'next', 'rotate-left', 'rotate-right', 'flip-horizontal', 'flip-vertical', 'fullscreen-modal', 'download'];
 
 /**
  * Check if the given value is a string.
@@ -3073,9 +3073,9 @@ var Viewer = /*#__PURE__*/function () {
         // inline 模式下也可以点击图片预览----点击图片预览
         addListener(element, EVENT_CLICK, this.onStart = function (_ref) {
           var target = _ref.target;
-          removeClass(_this.viewer, CLASS_HIDE);
-          addClass(_this.viewer, CLASS_SHOW);
           if (target.localName === 'img' && (!isFunction(options.filter) || options.filter.call(_this, target))) {
+            removeClass(_this.viewer, CLASS_HIDE);
+            addClass(_this.viewer, CLASS_SHOW);
             _this.view(_this.images.indexOf(target));
           }
         });

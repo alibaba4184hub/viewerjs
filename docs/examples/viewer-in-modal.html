@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Viewer.js</title>
   <link rel="stylesheet" href="https://unpkg.com/bootstrap@4/dist/css/bootstrap.min.css" crossorigin="anonymous">
-  <link rel="stylesheet" href="../css/viewer.css">
+  <link rel="stylesheet" href="../css/viewer-vue.css">
   <style>
     .pictures {
       list-style: none;
@@ -73,7 +73,7 @@
 
   <script src="https://unpkg.com/jquery@3/dist/jquery.slim.min.js" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/bootstrap@4/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-  <script src="../js/viewer.js"></script>
+  <script src="../js/viewer-vue.js"></script>
   <script>
     window.addEventListener('DOMContentLoaded', function () {
       var galley = document.getElementById('galley');
@@ -82,7 +82,7 @@
       $('#modal').on('shown.bs.modal', function (e) {
         // WARNING: should ignore Viewer's `shown` event here.
         if(e.namespace === 'bs.modal') {
-          viewer = new Viewer(galley, {
+          viewer = new ViewerVue(galley, {
             url: 'data-original',
           });
         }

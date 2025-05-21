@@ -1,4 +1,4 @@
-# Viewer.js
+# Viewerjs-vue
 
 [![Downloads](https://img.shields.io/npm/dm/viewerjs.svg)](https://www.npmjs.com/package/viewerjs) [![Version](https://img.shields.io/npm/v/viewerjs.svg)](https://www.npmjs.com/package/viewerjs) [![Gzip Size](https://img.shields.io/bundlephobia/minzip/viewerjs.svg)](https://unpkg.com/viewerjs/dist/viewer.common.js)
 
@@ -40,12 +40,12 @@
 
 ```text
 dist/
-├── viewer.css
-├── viewer.min.css   (compressed)
-├── viewer.js        (UMD)
-├── viewer.min.js    (UMD, compressed)
-├── viewer.common.js (CommonJS, default)
-└── viewer.esm.js    (ES Module)
+├── viewer-vue.css
+├── viewer-vue.min.css   (compressed)
+├── viewer-vue.js        (UMD)
+├── viewer-vue.min.js    (UMD, compressed)
+├── viewer-vue.common.js (CommonJS, default)
+└── viewer-vue.esm.js    (ES Module)
 ```
 
 ## Getting started
@@ -53,14 +53,14 @@ dist/
 ### Installation
 
 ```shell
-npm install viewerjs
+npm install viewerjs-vue
 ```
 
 In browser:
 
 ```html
-<link  href="/path/to/viewer.css" rel="stylesheet">
-<script src="/path/to/viewer.js"></script>
+<link  href="/path/to/viewer-vue.css" rel="stylesheet">
+<script src="/path/to/viewer-vue.js "></script>
 ```
 
 The [cdnjs](https://github.com/cdnjs/cdnjs) provides CDN support for Viewer.js's CSS and JavaScript. You can find the links [here](https://cdnjs.com/libraries/viewerjs).
@@ -70,7 +70,7 @@ The [cdnjs](https://github.com/cdnjs/cdnjs) provides CDN support for Viewer.js's
 #### Syntax
 
 ```js
-new Viewer(element[, options])
+new ViewerVue(element[, options])
 ```
 
 - **element**
@@ -100,11 +100,11 @@ new Viewer(element[, options])
 
 ```js
 // You should import the CSS file.
-// import 'viewerjs/dist/viewer.css';
-import Viewer from 'viewerjs';
+// import 'viewerjs-vue/dist/viewer.css';
+import Viewer from 'viewerjs-vue';
 
 // View an image.
-const viewer = new Viewer(document.getElementById('image'), {
+const viewer = new ViewerVue(document.getElementById('image'), {
   inline: true,
   viewed() {
     viewer.zoomTo(1);
@@ -187,7 +187,7 @@ Specify the visibility and the content of the title.
 For example, `title: 4` equals to:
 
 ```js
-new Viewer(image, {
+new ViewerVue(image, {
   title: [4, (image, imageData) => `${image.alt} (${imageData.naturalWidth} × ${imageData.naturalHeight})`]
 });
 ```
@@ -230,6 +230,8 @@ new Viewer(image, {
     rotateRight: 4,
     flipHorizontal: 4,
     flipVertical: 4,
+    fullscreenModal:4,
+    download:false,
   },
 });
 ```
@@ -496,7 +498,7 @@ For example:
 ```
 
 ```js
-new Viewer(image, {
+new ViewerVue(image, {
   url(image) {
     return image.src.replace('?size=160', '');
   },
@@ -631,7 +633,7 @@ All methods allow chain composition.
 As there are some **asynchronous** processes when start the viewer, you should call a method only when it is available, see the following **lifecycle**:
 
 ```js
-new Viewer(image, {
+new ViewerVue(image, {
   ready() {
     // 2 methods are available here: "show" and "destroy".
   },
@@ -1136,9 +1138,9 @@ If you have to use another viewer with the same namespace, call the `Viewer.noCo
 
 ```html
 <script src="other-viewer.js"></script>
-<script src="viewer.js"></script>
+<script src="viewer-vue.js"></script>
 <script>
-  Viewer.noConflict();
+  ViewerVue.noConflict();
   // Code that uses other `Viewer` can follow here.
 </script>
 ```

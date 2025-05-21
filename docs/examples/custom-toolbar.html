@@ -29,18 +29,6 @@
       cursor: zoom-in;
       width: 100%;
     }
-
-    .viewer-download {
-      color: #fff;
-      font-family: FontAwesome, serif;
-      font-size: 0.75rem;
-      line-height: 1.5rem;
-      text-align: center;
-    }
-
-    .viewer-download::before {
-      content: "\f019";
-    }
   </style>
 </head>
 <body>
@@ -79,7 +67,8 @@
           'rotateRight':true,
           'flipHorizontal':true,
           'flipVertical':true,
-          //  download:false,
+          'fullscreenModal':true,
+           download:true,
 
           prev: function() {
             viewer.prev(true);

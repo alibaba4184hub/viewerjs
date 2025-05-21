@@ -1,11 +1,11 @@
 /*!
- * ViewerVue.js v1.1.1
+ * ViewerVue.js v1.1.3
  * https://fengyuanchen.github.io/viewerjs
  *
  * Copyright 2015-present Chen Fengyuan
  * Released under the MIT license
  *
- * Date: 2025-05-20T09:21:33.872Z
+ * Date: 2025-05-21T06:23:56.831Z
  */
 
 .viewer-zoom-in::before, .viewer-zoom-out::before, .viewer-one-to-one::before, .viewer-reset::before, .viewer-prev::before, .viewer-play::before, .viewer-next::before, .viewer-rotate-left::before, .viewer-rotate-right::before, .viewer-flip-horizontal::before, .viewer-flip-vertical::before, .viewer-fullscreen::before, .viewer-fullscreen-exit::before, .viewer-close::before, .viewer-fullscreen-modal::before, .viewer-download::before {
