@@ -9,6 +9,7 @@ window.onload = function () {
   var options = {
     // inline: true,
     fullscreen:false,
+    focus:false,
     url: 'data-original',
     ready: function (e) {
       console.log(e.type);

@@ -675,3 +675,24 @@ export function getPointersCenter(pointers) {
     pageY,
   };
 }
+
+export function isFocusOnInput(event) {
+  const { activeElement } = document;
+  if (!activeElement) return false;
+
+  // 检查普通输入框或可编辑元素
+  if (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || activeElement.isContentEditable) {
+    return true;
+  }
+
+  // 处理 Shadow DOM 或嵌套组件
+  let { target } = event; // 从事件对象获取实际触发元素
+  while (target) {
+    if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
+      return true;
+    }
+    target = target.parentElement;
+  }
+
+  return false;
+}

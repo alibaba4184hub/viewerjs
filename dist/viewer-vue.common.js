@@ -1,11 +1,11 @@
 /*!
- * ViewerVue.js v1.1.5
- * https://fengyuanchen.github.io/viewerjs
+ * ViewerVue.js v1.1.7
+ * https://alibaba4184hub.github.io/viewerjs
  *
  * Copyright 2015-present Chen Fengyuan
  * Released under the MIT license
  *
- * Date: 2025-05-21T08:53:03.721Z
+ * Date: 2025-05-23T08:54:18.858Z
  */
 
 'use strict';
@@ -935,6 +935,26 @@ function getPointersCenter(pointers) {
     pageY: pageY
   };
 }
+function isFocusOnInput(event) {
+  var _document = document,
+    activeElement = _document.activeElement;
+  if (!activeElement) return false;
+
+  // 检查普通输入框或可编辑元素
+  if (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || activeElement.isContentEditable) {
+    return true;
+  }
+
+  // 处理 Shadow DOM 或嵌套组件
+  var target = event.target; // 从事件对象获取实际触发元素
+  while (target) {
+    if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
+      return true;
+    }
+    target = target.parentElement;
+  }
+  return false;
+}
 
 var render = {
   render: function render() {
@@ -1401,6 +1421,9 @@ var handlers = {
     var options = this.options;
     if (!options.keyboard) {
       return;
+    }
+    if (isFocusOnInput(event)) {
+      return; // 跳过输入框的键盘事件
     }
     var keyCode = event.keyCode || event.which || event.charCode;
     switch (keyCode) {

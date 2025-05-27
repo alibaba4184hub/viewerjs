@@ -1,7 +1,7 @@
 {
   "name": "viewerjs-vue",
   "description": "JavaScript image viewer.",
-  "version": "1.1.5",
+  "version": "1.1.7",
   "main": "dist/viewer-vue.common.js",
   "module": "dist/viewer-vue.esm.js",
   "browser": "dist/viewer-vue.js",
@@ -34,7 +34,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitee.com/crazy_about_programming/viewerjs-vue3.git"
+    "url": "gitee+https://gitee.com/crazy_about_programming/viewerjs-vue3.git"
   },
   "keywords": [
     "image",
@@ -55,7 +55,7 @@
   "bugs": {
     "url": "https://gitee.com/crazy_about_programming/viewerjs-vue3/issues"
   },
-  "homepage": "https://fengyuanchen.github.io/viewerjs",
+  "homepage": "https://alibaba4184hub.github.io/viewerjs",
   "devDependencies": {
     "@babel/core": "^7.26.0",
     "@babel/preset-env": "^7.26.0",

@@ -306,6 +306,7 @@
             <button type="button" class="btn btn-primary" data-enable="inline" data-method="tooltip">Tooltip</button>
           </div>
           <button type="button" class="btn btn-block btn-danger" data-enable="modal inline" data-method="destroy">Destroy</button>
+          <input type="text" value="测试对输入框的影响">
         </div>
       </div>
     </div>
@@ -330,5 +331,11 @@
   <script src="https://fengyuanchen.github.io/shared/google-analytics.js" crossorigin="anonymous"></script>
   <script src="js/viewer-vue.js"></script>
   <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('keydown', (event)=>{
+         console.log('event',event.target.tagName)
+
+    })
+  </script>
 </body>
 </html>

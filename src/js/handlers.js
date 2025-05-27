@@ -28,6 +28,7 @@ import {
   removeClass,
   setStyle,
   toggleClass,
+  isFocusOnInput,
 } from './utilities';
 
 export default {
@@ -237,6 +238,9 @@ export default {
 
     if (!options.keyboard) {
       return;
+    }
+    if (isFocusOnInput(event)) {
+      return; // 跳过输入框的键盘事件
     }
 
     const keyCode = event.keyCode || event.which || event.charCode;
