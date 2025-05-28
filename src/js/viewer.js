@@ -22,6 +22,7 @@ import {
   REGEXP_SPACES,
   WINDOW,
   CLASS_SHOW,
+  BUTTONS_TIPS,
 } from './constants';
 import {
   addClass,
@@ -217,10 +218,12 @@ class Viewer {
     const navbar = viewer.querySelector(`.${NAMESPACE}-navbar`);
     const button = viewer.querySelector(`.${NAMESPACE}-button`);
     const canvas = viewer.querySelector(`.${NAMESPACE}-canvas`);
+    const titleBubble = viewer.querySelector(`.${NAMESPACE}-title >.${NAMESPACE}-title-bubble`);
 
     this.parent = parent;
     this.viewer = viewer;
     this.title = title;
+    this.titleBubble = titleBubble;
     this.toolbar = toolbar;
     this.navbar = navbar;
     this.button = button;
@@ -285,6 +288,9 @@ class Viewer {
         const size = deep && !isUndefined(value.size) ? value.size : value;
         const click = deep && !isUndefined(value.click) ? value.click : value;
         const item = document.createElement('li');
+        const buttonTips = document.createElement('span');
+        addClass(buttonTips, `${NAMESPACE}-action-tip`);
+        buttonTips.innerText = BUTTONS_TIPS[name];
 
         if (options.keyboard) {
           item.setAttribute('tabindex', 0);
@@ -292,6 +298,7 @@ class Viewer {
 
         item.setAttribute('role', 'button');
         addClass(item, `${NAMESPACE}-${name}`);
+        addClass(item, `${NAMESPACE}-relative`);
 
         if (!isFunction(click)) {
           setData(item, DATA_ACTION, name);
@@ -310,7 +317,7 @@ class Viewer {
         if (isFunction(click)) {
           addListener(item, EVENT_CLICK, click);
         }
-
+        item.appendChild(buttonTips);
         list.appendChild(item);
       });
 

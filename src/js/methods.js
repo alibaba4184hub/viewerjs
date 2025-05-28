@@ -235,6 +235,7 @@ export default {
       element,
       options,
       title,
+      titleBubble,
       canvas,
     } = this;
     const item = this.items[index];
@@ -304,11 +305,14 @@ export default {
     const onViewed = () => {
       const { imageData } = this;
       const render = Array.isArray(options.title) ? options.title[1] : options.title;
-      title.setAttribute('title', escapeHTMLEntities(
-        isFunction(render)
-          ? render.call(this, image, imageData)
-          : `${alt}`,
-      ));
+      // title.setAttribute('title', escapeHTMLEntities(
+      //   isFunction(render)
+      //     ? render.call(this, image, imageData)
+      //     : `${alt}`,
+      // ));
+      titleBubble.innerHTML = escapeHTMLEntities(isFunction(render)
+        ? render.call(this, image, imageData)
+        : `${alt}`);
       title.innerHTML = escapeHTMLEntities(isFunction(render)
         ? render.call(this, image, imageData)
         : `${alt}`);

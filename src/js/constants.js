@@ -87,3 +87,19 @@ export const BUTTONS = [
   'full-screen-modal',
   'download',
 ];
+
+export const BUTTONS_TIPS = {
+  'zoom-in': '放大',
+  'zoom-out': '缩小',
+  'one-to-one': '100%显示',
+  reset: '重置',
+  prev: '上一张',
+  play: '以幻灯片形式播放',
+  next: '下一张',
+  'rotate-left': '向左旋转90°',
+  'rotate-right': '向右旋转90°',
+  'flip-horizontal': '水平翻转',
+  'flip-vertical': '垂直翻转',
+  'full-screen-modal': '全屏',
+  download: '下载',
+};

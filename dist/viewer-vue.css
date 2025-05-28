@@ -1,11 +1,11 @@
 /*!
- * ViewerVue.js v1.1.7
+ * ViewerVue.js v1.1.8
  * https://alibaba4184hub.github.io/viewerjs
  *
  * Copyright 2015-present Chen Fengyuan
  * Released under the MIT license
  *
- * Date: 2025-05-23T08:54:17.133Z
+ * Date: 2025-05-28T03:42:27.814Z
  */
 
 .viewer-zoom-in::before, .viewer-zoom-out::before, .viewer-one-to-one::before, .viewer-reset::before, .viewer-prev::before, .viewer-play::before, .viewer-next::before, .viewer-rotate-left::before, .viewer-rotate-right::before, .viewer-flip-horizontal::before, .viewer-flip-vertical::before, .viewer-fullscreen::before, .viewer-fullscreen-exit::before, .viewer-close::before, .viewer-full-screen-modal::before, .viewer-download::before {
@@ -246,7 +246,8 @@
 .viewer-toolbar > ul {
     display: inline-block;
     margin: 0 auto 5px;
-    overflow: hidden;
+
+    /* overflow: hidden; */
     padding: 6px 3px;
   }
 
@@ -257,7 +258,8 @@
       float: left;
       height: 50px;
       margin: 0 5px;
-      overflow: hidden;
+
+      /* overflow: hidden; */
       transition: background-color 0.15s;
       width: 50px;
     }
@@ -276,6 +278,10 @@
 
 .viewer-toolbar > ul > li::before {
         margin: 2px;
+      }
+
+.viewer-toolbar > ul > li:hover .viewer-action-tip {
+        display: block;
       }
 
 .viewer-toolbar > ul > li + li {
@@ -334,6 +340,40 @@
   text-overflow: ellipsis;
   transition: opacity 0.15s;
   white-space: nowrap;
+}
+
+.viewer-title-tooltip:hover + .viewer-title-bubble {
+  display: block;
+}
+
+.viewer-title-bubble {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 2px;
+  bottom: -15px;
+  color: #fff;
+  display: none;
+  font-size: 16px;
+  left: 50%;
+  line-height: 20px;
+  padding: 0 10px;
+  position: absolute;
+  text-align: left;
+  white-space: wrap;
+  width: auto;
+}
+
+.viewer-title-bubble::after {
+  border-bottom: 4px solid rgba(0, 0, 0, 0.5);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 0 solid transparent;
+  content: '';
+  display: inline-block;
+  height: 0;
+  left: 10%;
+  position: absolute;
+  top: -4px;
+  width: 0;
 }
 
 .viewer-title-tooltip:hover {
@@ -437,6 +477,40 @@
     width: 40px;
     z-index: 1;
   }
+
+.viewer-relative {
+  position: relative;
+}
+
+.viewer-action-tip {
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  color: #fff;
+  display: none;
+  font-size: 14px;
+  height: 25px;
+  left: 50%;
+  line-height: 25px;
+  margin-left: -21px;
+  padding: 0 8px;
+  position: absolute;
+  top: -29px;
+  white-space: nowrap;
+}
+
+.viewer-action-tip::after {
+  border-bottom: 0 solid transparent;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 4px solid rgba(0, 0, 0, 0.5);
+  bottom: -4px;
+  content: '';
+  display: inline-block;
+  height: 0;
+  left: 10%;
+  position: absolute;
+  width: 0;
+}
 
 @media (max-width: 767px) {
   .viewer-hide-xs-down {

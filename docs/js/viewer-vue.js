@@ -1,11 +1,11 @@
 /*!
- * ViewerVue.js v1.1.7
+ * ViewerVue.js v1.1.8
  * https://alibaba4184hub.github.io/viewerjs
  *
  * Copyright 2015-present Chen Fengyuan
  * Released under the MIT license
  *
- * Date: 2025-05-23T08:54:18.858Z
+ * Date: 2025-05-28T03:42:29.547Z
  */
 
 (function (global, factory) {
@@ -288,7 +288,7 @@
     stop: null
   };
 
-  var TEMPLATE = '<div class="viewer-container" tabindex="-1" touch-action="none">' + '<div class="viewer-canvas"></div>' + '<div class="viewer-footer">' + '<div class="viewer-title">' + '<span class="viewer-title-tooltip"></span>' + '</div>' + '<div class="viewer-toolbar"></div>' + '<div class="viewer-navbar">' + '<ul class="viewer-list" role="navigation"></ul>' + '</div>' + '</div>' + '<div class="viewer-tooltip" role="alert" aria-hidden="true"></div>' + '<div class="viewer-button" data-viewer-action="mix" role="button"></div>' + '<div class="viewer-player"></div>' + '</div>';
+  var TEMPLATE = '<div class="viewer-container" tabindex="-1" touch-action="none">' + '<div class="viewer-canvas"></div>' + '<div class="viewer-footer">' + '<div class="viewer-title viewer-relative">' + '<span class="viewer-title-tooltip"></span>' + '<span class="viewer-title-bubble"></span>' + '</div>' + '<div class="viewer-toolbar"></div>' + '<div class="viewer-navbar">' + '<ul class="viewer-list" role="navigation"></ul>' + '</div>' + '</div>' + '<div class="viewer-tooltip" role="alert" aria-hidden="true"></div>' + '<div class="viewer-button" data-viewer-action="mix" role="button"></div>' + '<div class="viewer-player"></div>' + '</div>';
 
   var IS_BROWSER = typeof window !== 'undefined' && typeof window.document !== 'undefined';
   var WINDOW = IS_BROWSER ? window : {};
@@ -364,6 +364,21 @@
 
   // Misc
   var BUTTONS = ['zoom-in', 'zoom-out', 'one-to-one', 'reset', 'prev', 'play', 'next', 'rotate-left', 'rotate-right', 'flip-horizontal', 'flip-vertical', 'full-screen-modal', 'download'];
+  var BUTTONS_TIPS = {
+    'zoom-in': '放大',
+    'zoom-out': '缩小',
+    'one-to-one': '100%显示',
+    reset: '重置',
+    prev: '上一张',
+    play: '以幻灯片形式播放',
+    next: '下一张',
+    'rotate-left': '向左旋转90°',
+    'rotate-right': '向右旋转90°',
+    'flip-horizontal': '水平翻转',
+    'flip-vertical': '垂直翻转',
+    'full-screen-modal': '全屏',
+    download: '下载'
+  };
 
   /**
    * Check if the given value is a string.
@@ -1853,6 +1868,7 @@
       var element = this.element,
         options = this.options,
         title = this.title,
+        titleBubble = this.titleBubble,
         canvas = this.canvas;
       var item = this.items[index];
       var img = item.querySelector('img');
@@ -1910,7 +1926,12 @@
       var onViewed = function onViewed() {
         var imageData = _this2.imageData;
         var render = Array.isArray(options.title) ? options.title[1] : options.title;
-        title.setAttribute('title', escapeHTMLEntities(isFunction(render) ? render.call(_this2, image, imageData) : "".concat(alt)));
+        // title.setAttribute('title', escapeHTMLEntities(
+        //   isFunction(render)
+        //     ? render.call(this, image, imageData)
+        //     : `${alt}`,
+        // ));
+        titleBubble.innerHTML = escapeHTMLEntities(isFunction(render) ? render.call(_this2, image, imageData) : "".concat(alt));
         title.innerHTML = escapeHTMLEntities(isFunction(render) ? render.call(_this2, image, imageData) : "".concat(alt));
         // (${imageData.naturalWidth} × ${imageData.naturalHeight})
       };
@@ -3132,9 +3153,11 @@
         var navbar = viewer.querySelector(".".concat(NAMESPACE, "-navbar"));
         var button = viewer.querySelector(".".concat(NAMESPACE, "-button"));
         var canvas = viewer.querySelector(".".concat(NAMESPACE, "-canvas"));
+        var titleBubble = viewer.querySelector(".".concat(NAMESPACE, "-title >.").concat(NAMESPACE, "-title-bubble"));
         this.parent = parent;
         this.viewer = viewer;
         this.title = title;
+        this.titleBubble = titleBubble;
         this.toolbar = toolbar;
         this.navbar = navbar;
         this.button = button;
@@ -3183,11 +3206,15 @@
             var size = deep && !isUndefined(value.size) ? value.size : value;
             var click = deep && !isUndefined(value.click) ? value.click : value;
             var item = document.createElement('li');
+            var buttonTips = document.createElement('span');
+            addClass(buttonTips, "".concat(NAMESPACE, "-action-tip"));
+            buttonTips.innerText = BUTTONS_TIPS[name];
             if (options.keyboard) {
               item.setAttribute('tabindex', 0);
             }
             item.setAttribute('role', 'button');
             addClass(item, "".concat(NAMESPACE, "-").concat(name));
+            addClass(item, "".concat(NAMESPACE, "-relative"));
             if (!isFunction(click)) {
               setData(item, DATA_ACTION, name);
             }
@@ -3202,6 +3229,7 @@
             if (isFunction(click)) {
               addListener(item, EVENT_CLICK, click);
             }
+            item.appendChild(buttonTips);
             list.appendChild(item);
           });
           toolbar.appendChild(list);
